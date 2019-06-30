@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  sp:
+   image: demo-app-5555-1:latest
+   ports:
+    - "5555:5555"       
