@@ -1,0 +1,7 @@
+
+CREATE TABLE `USER_DETAILS` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(32)  NOT NULL,
+  `USERNAME` varchar(32)  NOT NULL,
+  `PASSWORD` varchar(32)  NOT NULL,
+    PRIMARY KEY (`ID`));

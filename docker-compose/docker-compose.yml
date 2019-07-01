@@ -1,7 +1,23 @@
 version: '3'
 
 services:
-  sp:
+  spring-boot:
    image: demo-app-5555-1:latest
    ports:
-    - "5555:5555"       
+    - "5555:5555"
+  db-mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - /Users/wahrons/Documents/dev/mysql-dump/mysql:/var/lib/mysql
+      - ./init/:/docker-entrypoint-initdb.d
+
