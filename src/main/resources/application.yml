@@ -1,6 +1,6 @@
 standalone:
   jdbc:
     driver: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/db
+    url: jdbc:mysql://mysql_for_demo:3306/db
     user: user
     pass: root

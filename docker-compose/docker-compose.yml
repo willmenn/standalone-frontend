@@ -1,12 +1,10 @@
 version: '3'
 
 services:
-  spring-boot:
-   image: demo-app-5555-1:latest
-   ports:
-    - "5555:5555"
+
   db-mysql:
     image: mysql:5.7
+    container_name: mysql_for_demo
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
@@ -14,10 +12,39 @@ services:
       MYSQL_PASSWORD: 'root'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
-      - '3306:3306'
+      - '3306:3306' # for debug only
     expose:
       - '3306'
     volumes:
       - /Users/wahrons/Documents/dev/mysql-dump/mysql:/var/lib/mysql
       - ./init/:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+  spring-boot:
+    depends_on:
+      - db-mysql
+    image: demo-app-5555:latest
+    container_name: demo-app
+    volumes:
+      - ../build/libs/standalone-0.1.jar:/standalone-0.1.jar
+    expose:
+      - '5555'
+    networks:
+      - app-network
+  nginx:
+    depends_on:
+      - spring-boot
+    restart: always
+    image: nginx:latest
+    container_name: nginx_for_demo
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app-network
 
+networks:
+  app-network:
+    driver: bridge
