@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   db-mysql:
     image: mysql:5.7
     container_name: mysql_for_demo
