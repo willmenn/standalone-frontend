@@ -18,8 +18,4 @@ spec:
           ports:
             - containerPort: 5555
               name: http
-        - name: nginx shit
-          image: nginx
-          ports:
-            - containerPort: 80
-              volume:
+
