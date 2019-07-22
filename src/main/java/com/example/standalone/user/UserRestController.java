@@ -1,4 +1,4 @@
-package com.example.standalone.auth;
+package com.example.standalone.user;
 
 import com.example.standalone.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -10,44 +10,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthRestController {
+@RequestMapping("/user")
+public class UserRestController {
 
-    private AuthJwtCreator jwtCreator;
     private UserRepository repository;
 
     @Autowired
-    public AuthRestController(AuthJwtCreator jwtCreator, UserRepository repository) {
-        this.jwtCreator = jwtCreator;
+    public UserRestController(UserRepository repository) {
         this.repository = repository;
     }
 
     @PostMapping
-    public AuthResponse authUser(@RequestBody AuthRequest authRequest) {
-        TokenAndExpiration token = jwtCreator.getToken();
-
-        return new AuthResponse(authRequest.username, token.getToken(), token.getExpiration());
+    public boolean createUser(@RequestBody CreateUserRequest createUserRequest) {
+        return repository.insert(createUserRequest.username, createUserRequest.password, createUserRequest.role);
     }
 
-
-    @Value
-    @AllArgsConstructor
-    private static class AuthResponse {
-        private String username;
-        private String token;
-        private LocalDateTime expiration;
+    @GetMapping
+    public List<Map<String, Object>> getAllUsers() {
+        return repository.fetchAll();
     }
 
     @Value
     @AllArgsConstructor
-    private static class AuthRequest {
+    private static class CreateUserRequest {
         private String username;
         private String password;
-        private String appToken;
+        private String role;
     }
+
 }
