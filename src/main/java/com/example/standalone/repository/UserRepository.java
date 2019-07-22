@@ -20,4 +20,8 @@ public class UserRepository {
     public List<Map<String, Object>> fetchAll(){
         return jdbcTemplate.queryForList("SELECT NAME FROM USER_DETAILS");
     }
+
+    public void insert(){
+
+    }
 }

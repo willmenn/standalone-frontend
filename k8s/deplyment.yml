@@ -14,8 +14,21 @@ spec:
     spec:
       containers:
         - name: standalone
-          image: willmenn/standalone:0.3
+          image: willmenn/standalone:0.7
           ports:
             - containerPort: 5555
               name: http
-
+        - image: mysql:5.5
+          name: mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: MYSQL_DATABASE
+              value: "auth"
+            - name: MYSQL_USER
+              value: "user"
+            - name: MYSQL_PASSWORD
+              value: "root"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
