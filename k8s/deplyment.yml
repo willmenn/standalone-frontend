@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: standalone
+        tier: mysql
     spec:
       containers:
         - name: standalone
@@ -32,3 +33,10 @@ spec:
               value: "root"
             - name: MYSQL_ROOT_PASSWORD
               value: "root"
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
