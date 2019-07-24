@@ -13,7 +13,6 @@ testSets {
     integrationTest
 }
 
-
 repositories {
     mavenCentral()
 }
@@ -53,3 +52,5 @@ processResources.dependsOn webpackBuildDev
 bootRun {
     jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
 }
+
+check.dependsOn integrationTest
