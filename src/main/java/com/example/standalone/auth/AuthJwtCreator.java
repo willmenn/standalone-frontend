@@ -22,7 +22,7 @@ public class AuthJwtCreator {
 
     public AuthJwtCreator() {
         this.algorithm = Algorithm.HMAC256("secret");
-        this.verifier = verifier = JWT.require(algorithm)
+        this.verifier = JWT.require(algorithm)
                 .withIssuer("auth0")
                 .build();
     }

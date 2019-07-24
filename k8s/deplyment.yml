@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: standalone
-          image: willmenn/standalone:0.8.4
+          image: willmenn/standalone:0.8.5
           ports:
             - containerPort: 5555
               name: http

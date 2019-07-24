@@ -24,14 +24,14 @@ public class UserRepository {
     }
 
     public List<Map<String, Object>> fetchAll() {
-        return jdbcTemplate.queryForList("SELECT USERNAME FROM USER_DETAILS");
+        return jdbcTemplate.queryForList("SELECT USERNAME, MD5(PASSWORD) FROM USER_DETAILS");
     }
 
     public boolean insert(String username, String password, String role) {
 
         jdbcTemplate.execute("INSERT INTO USER_DETAILS " +
                 "(username,password,role)" +
-                "VALUES(?,?,?)", (PreparedStatementCallback<Boolean>) ps -> {
+                "VALUES(?,MD5('?'),?)", (PreparedStatementCallback<Boolean>) ps -> {
 
             ps.setString(1, username);
             ps.setString(2, password);
