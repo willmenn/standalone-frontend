@@ -1,18 +1,20 @@
 package com.example.standalone.auth;
 
-import com.example.standalone.auth.exception.UserOrPasswordNotFoundException;
 import com.example.standalone.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,13 +30,13 @@ public class AuthRestController {
     }
 
     @PostMapping
-    public AuthResponse authUser(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {
         TokenAndExpiration token = jwtCreator.getToken();
         boolean isUsernameTheSame = repository.findByUsername(authRequest.getUsername());
         if (!isUsernameTheSame) {
-            throw new UserOrPasswordNotFoundException();
+           return new ResponseEntity("", UNAUTHORIZED);
         }
-        return new AuthResponse(authRequest.username, token.getToken(), token.getExpiration());
+        return new ResponseEntity(new AuthResponse(authRequest.username, token.getToken(), token.getExpiration()), OK);
     }
 
 
