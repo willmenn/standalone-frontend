@@ -1,4 +1,4 @@
-package com.example.standalone.repository;
+package com.example.standalone.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -45,11 +45,7 @@ public class UserRepository {
 
     public boolean findByUsername(String username) {
         String usernameFromDb = jdbcTemplate
-                .query("SELECT USERNAME FROM USER_DETAILS WHERE USERNAME = ?",
-                        ps -> ps.setString(1, username),
-                        rs -> {
-                            return rs.getString(1);
-                        }
+                .queryForObject("SELECT USERNAME FROM USER_DETAILS WHERE USERNAME = ?", new Object[]{username},String.class
                 );
 
         return usernameFromDb.equals(username);

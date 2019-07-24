@@ -1,17 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '2.1.5.RELEASE'
     id 'java'
-    id 'org.unbroken-dome.test-sets' version '2.1.1'
 }
 
 apply plugin: 'io.spring.dependency-management'
 group = 'com.example'
 version = '0.3'
 sourceCompatibility = '1.8'
-
-testSets {
-    integrationTest
-}
 
 repositories {
     mavenCentral()
@@ -33,7 +28,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    integrationTestImplementation 'ch.vorburger.mariaDB4j:mariaDB4j:2.4.0'
 }
 
 task npmInstall(type: Exec) {
@@ -52,5 +46,3 @@ processResources.dependsOn webpackBuildDev
 bootRun {
     jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
 }
-
-check.dependsOn integrationTest

@@ -1,8 +1,10 @@
 package com.example.standalone.auth;
 
 import com.example.standalone.auth.exception.UserOrPasswordNotFoundException;
-import com.example.standalone.repository.UserRepository;
+import com.example.standalone.user.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,17 +38,19 @@ public class AuthRestController {
     }
 
 
-    @Value
+    @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
-    private static class AuthResponse {
+    static class AuthResponse {
         private String username;
         private String token;
         private LocalDateTime expiration;
     }
 
-    @Value
+    @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
-    private static class AuthRequest {
+    static class AuthRequest {
         private String username;
         private String password;
         private String appToken;

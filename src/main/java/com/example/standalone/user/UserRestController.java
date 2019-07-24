@@ -1,7 +1,8 @@
 package com.example.standalone.user;
 
-import com.example.standalone.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,8 @@ public class UserRestController {
         return repository.fetchAll();
     }
 
-    @Value
+    @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     private static class CreateUserRequest {
         private String username;
