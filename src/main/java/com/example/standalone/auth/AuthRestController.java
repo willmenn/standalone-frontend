@@ -38,7 +38,7 @@ public class AuthRestController {
     public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {
         TokenAndExpiration token = jwtCreator.getToken();
         String role = repository.findByUsername(authRequest.getUsername(), authRequest.getPassword());
-        if (role != null && !role.isEmpty()) {
+        if (role == null && role.isEmpty()) {
             return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
         }
         return new ResponseEntity<>(new AuthResponse(authRequest.username,

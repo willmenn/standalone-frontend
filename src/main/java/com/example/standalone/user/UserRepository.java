@@ -44,11 +44,15 @@ public class UserRepository {
     }
 
     public String findByUsername(String username, String password) {
-        return jdbcTemplate
-                .queryForObject("SELECT ROLE FROM USER_DETAILS " +
-                                "WHERE USERNAME = ?," +
-                                "AND PASSWORD = MD5(?)",
-                        new Object[]{username, password}, String.class
-                );
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT ROLE FROM USER_DETAILS " +
+                                    "WHERE USERNAME = ? " +
+                                    "AND PASSWORD = MD5(?)",
+                            new Object[]{username, password}, String.class
+                    );
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
