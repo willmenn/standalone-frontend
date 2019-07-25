@@ -34,7 +34,7 @@ public class UserRepository {
 
             ps.setString(1, username);
             ps.setString(2, password);
-            ps.setString(3, role);
+            ps.setString(3, role.toUpperCase());
             ps.setString(4, app);
 
             return ps.execute();
