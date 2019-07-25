@@ -4,3 +4,5 @@ standalone:
     url: jdbc:mysql://localhost:3306/auth?serverTimezone=CET
     user: user
     pass: root
+  jwt:
+    expire-time-sec: 5

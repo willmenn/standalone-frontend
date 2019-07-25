@@ -37,50 +37,54 @@ public class AuthRestController {
     @PostMapping
     public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {
         TokenAndExpiration token = jwtCreator.getToken();
-        boolean isUsernameTheSame = repository.findByUsername(authRequest.getUsername());
-        if (!isUsernameTheSame) {
-            return new ResponseEntity(EMPTY, UNAUTHORIZED);
+        String role = repository.findByUsername(authRequest.getUsername(), authRequest.getPassword());
+        if (role != null && !role.isEmpty()) {
+            return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
         }
-        return new ResponseEntity(new AuthResponse(authRequest.username, token.getToken(), token.getExpiration()), OK);
+        return new ResponseEntity<>(new AuthResponse(authRequest.username,
+                token.getToken(),
+                role,
+                token.getExpiration()), OK);
     }
 
     @PostMapping("/validate")
     public ResponseEntity validateJwt(@RequestBody ValidateToken validateToken) {
         Boolean isValid = jwtCreator.validateToken(validateToken.getToken());
         if (isValid) {
-            return new ResponseEntity(new IsValidToken(isValid), ACCEPTED);
+            return new ResponseEntity<>(new IsValidToken(isValid), ACCEPTED);
         } else {
-            return new ResponseEntity(new IsValidToken(isValid), NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new IsValidToken(isValid), NOT_ACCEPTABLE);
         }
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class IsValidToken {
+    private static class IsValidToken {
         private Boolean isValid;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class ValidateToken {
+    private static class ValidateToken {
         private String token;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class AuthResponse {
+    private static class AuthResponse {
         private String username;
         private String token;
+        private String role;
         private LocalDateTime expiration;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class AuthRequest {
+    private static class AuthRequest {
         private String username;
         private String password;
         private String appToken;

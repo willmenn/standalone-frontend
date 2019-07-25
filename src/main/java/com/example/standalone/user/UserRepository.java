@@ -23,15 +23,14 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Map<String, Object>> fetchAll() {
-        return jdbcTemplate.queryForList("SELECT USERNAME, MD5(PASSWORD) FROM USER_DETAILS");
+    List<Map<String, Object>> fetchAll() {
+        return jdbcTemplate.queryForList("SELECT USERNAME, ROLE FROM USER_DETAILS");
     }
 
-    public boolean insert(String username, String password, String role) {
-
+    boolean insert(String username, String password, String role) {
         jdbcTemplate.execute("INSERT INTO USER_DETAILS " +
                 "(username,password,role)" +
-                "VALUES(?,MD5('?'),?)", (PreparedStatementCallback<Boolean>) ps -> {
+                "VALUES(?,MD5(?),?)", (PreparedStatementCallback<Boolean>) ps -> {
 
             ps.setString(1, username);
             ps.setString(2, password);
@@ -40,14 +39,16 @@ public class UserRepository {
             return ps.execute();
 
         });
+
         return true;
     }
 
-    public boolean findByUsername(String username) {
-        String usernameFromDb = jdbcTemplate
-                .queryForObject("SELECT USERNAME FROM USER_DETAILS WHERE USERNAME = ?", new Object[]{username},String.class
+    public String findByUsername(String username, String password) {
+        return jdbcTemplate
+                .queryForObject("SELECT ROLE FROM USER_DETAILS " +
+                                "WHERE USERNAME = ?," +
+                                "AND PASSWORD = MD5(?)",
+                        new Object[]{username, password}, String.class
                 );
-
-        return usernameFromDb.equals(username);
     }
 }

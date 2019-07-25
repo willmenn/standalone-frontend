@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,8 +19,11 @@ public class AuthJwtCreator {
 
     private JWTVerifier verifier;
     private Algorithm algorithm;
+    private JwtConfig configs;
 
-    public AuthJwtCreator() {
+    @Autowired
+    public AuthJwtCreator(JwtConfig configs) {
+        this.configs = configs;
         this.algorithm = Algorithm.HMAC256("secret");
         this.verifier = JWT.require(algorithm)
                 .withIssuer("auth0")
@@ -29,7 +32,7 @@ public class AuthJwtCreator {
 
     TokenAndExpiration getToken() {
         LocalDateTime expirationTime = now(systemUTC())
-                .plusMinutes(5);
+                .plusMinutes(configs.getExpireTimeSec());
         String token = JWT.create()
                 .withExpiresAt(from(expirationTime
                         .toInstant(UTC)))
