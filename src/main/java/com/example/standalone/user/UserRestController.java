@@ -27,7 +27,10 @@ public class UserRestController {
 
     @PostMapping
     public boolean createUser(@RequestBody CreateUserRequest createUserRequest) {
-        return repository.insert(createUserRequest.username, createUserRequest.password, createUserRequest.role);
+        return repository.insert(createUserRequest.username,
+                createUserRequest.password,
+                createUserRequest.role,
+                createUserRequest.app);
     }
 
     @GetMapping
@@ -42,6 +45,7 @@ public class UserRestController {
         private String username;
         private String password;
         private String role;
+        private String app;
     }
 
 }

@@ -27,14 +27,15 @@ public class UserRepository {
         return jdbcTemplate.queryForList("SELECT USERNAME, ROLE FROM USER_DETAILS");
     }
 
-    boolean insert(String username, String password, String role) {
+    boolean insert(String username, String password, String role, String app) {
         jdbcTemplate.execute("INSERT INTO USER_DETAILS " +
-                "(username,password,role)" +
-                "VALUES(?,MD5(?),?)", (PreparedStatementCallback<Boolean>) ps -> {
+                "(username,password,role, app)" +
+                "VALUES(?,MD5(?),?, ?)", (PreparedStatementCallback<Boolean>) ps -> {
 
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, role);
+            ps.setString(4, app);
 
             return ps.execute();
 
@@ -43,13 +44,14 @@ public class UserRepository {
         return true;
     }
 
-    public String findByUsername(String username, String password) {
+    public String findByUsername(String username, String password, String app) {
         try {
             return jdbcTemplate
                     .queryForObject("SELECT ROLE FROM USER_DETAILS " +
                                     "WHERE USERNAME = ? " +
-                                    "AND PASSWORD = MD5(?)",
-                            new Object[]{username, password}, String.class
+                                    "AND PASSWORD = MD5(?)" +
+                                    "AND APP = ?",
+                            new Object[]{username, password, app}, String.class
                     );
         } catch (Exception e) {
             return null;

@@ -1,0 +1,1 @@
+ALTER TABLE USER_DETAILS ADD COLUMN app varchar(100) default 1;

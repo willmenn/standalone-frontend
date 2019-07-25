@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,8 +35,12 @@ public class AuthRestController {
     @PostMapping
     public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {
         TokenAndExpiration token = jwtCreator.getToken();
-        String role = repository.findByUsername(authRequest.getUsername(), authRequest.getPassword());
-        if (role == null && role.isEmpty()) {
+
+        String role = repository.findByUsername(authRequest.getUsername(),
+                authRequest.getPassword(),
+                authRequest.getAppToken());
+
+        if (role == null || role.isEmpty()) {
             return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
         }
         return new ResponseEntity<>(new AuthResponse(authRequest.username,
