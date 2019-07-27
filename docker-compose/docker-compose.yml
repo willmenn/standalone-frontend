@@ -21,8 +21,10 @@ services:
   spring-boot:
     depends_on:
       - db-mysql
-    image: willmenn/standalone:0.9.08
+    image: willmenn/standalone:0.9.09
     container_name: demo-app
+    environment:
+      SPRING_PROFILES_ACTIVE: 'docker'
     expose:
       - '5555'
     networks:
