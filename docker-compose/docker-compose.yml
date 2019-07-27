@@ -15,17 +15,15 @@ services:
     expose:
       - '3306'
     volumes:
-      - /Users/wahrons/Documents/dev/mysql-dump/mysql:/var/lib/mysql
-      - ./init/:/docker-entrypoint-initdb.d
+      - ./mysql/data:/var/lib/mysql
     networks:
       - app-network
   spring-boot:
     depends_on:
       - db-mysql
-    image: demo-app-5555:latest
+      - redis
+    image: willmenn/standalone:0.9.04
     container_name: demo-app
-    volumes:
-      - ../build/libs/standalone-0.1.jar:/standalone-0.1.jar
     expose:
       - '5555'
     networks:
@@ -43,6 +41,13 @@ services:
       - 443:443
     networks:
       - app-network
+  redis:
+    restart: always
+    image: redis:5.0-alpine
+    volumes:
+      - ./data:/data
+    ports:
+      - '6379:6379'
 
 networks:
   app-network:
