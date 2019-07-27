@@ -3,15 +3,15 @@ version: '3'
 services:
   db-mysql:
     image: mysql:5.7
-    container_name: mysql-for-demo
+    container_name: mysql_for_demo
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
+      MYSQL_DATABASE: 'auth'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'root'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
-      - '3306:3306' # for debug only
+      - '3306:3306'
     expose:
       - '3306'
     volumes:
@@ -21,8 +21,7 @@ services:
   spring-boot:
     depends_on:
       - db-mysql
-      - redis
-    image: willmenn/standalone:0.9.04
+    image: willmenn/standalone:0.9.08
     container_name: demo-app
     expose:
       - '5555'

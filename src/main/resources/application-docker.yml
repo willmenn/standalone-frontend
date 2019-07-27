@@ -1,0 +1,8 @@
+standalone:
+  jdbc:
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysql_for_demo:3306/auth?serverTimezone=CET
+    user: user
+    pass: root
+  jwt:
+    expire-time-sec: 5
