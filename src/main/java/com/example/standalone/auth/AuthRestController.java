@@ -1,5 +1,7 @@
 package com.example.standalone.auth;
 
+import com.example.standalone.cache.UserCache;
+import com.example.standalone.cache.UserToken;
 import com.example.standalone.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +27,13 @@ public class AuthRestController {
 
     private AuthJwtCreator jwtCreator;
     private UserRepository repository;
+    private UserCache userCache;
 
     @Autowired
-    public AuthRestController(AuthJwtCreator jwtCreator, UserRepository repository) {
+    public AuthRestController(AuthJwtCreator jwtCreator, UserRepository repository, UserCache userCache) {
         this.jwtCreator = jwtCreator;
         this.repository = repository;
+        this.userCache = userCache;
     }
 
     @PostMapping
@@ -43,6 +47,7 @@ public class AuthRestController {
         if (role == null || role.isEmpty()) {
             return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
         }
+        userCache.addUser(new UserToken(authRequest.getUsername(), token.getToken()));
         return new ResponseEntity<>(new AuthResponse(authRequest.username,
                 token.getToken(),
                 role,
