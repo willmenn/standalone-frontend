@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: standalone
-          image: willmenn/standalone:0.9.04
+          image: willmenn/standalone:0.9.16
           ports:
             - containerPort: 5555
               name: http
@@ -40,3 +40,30 @@ spec:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:5.0-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi

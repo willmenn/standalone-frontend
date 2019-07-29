@@ -22,7 +22,7 @@ public class RedisConfig {
     JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory
                 = new JedisConnectionFactory();
-        jedisConFactory.setHostName("localhost");
+        jedisConFactory.setHostName("standalone-redis-service");
         jedisConFactory.setPort(6379);
         return jedisConFactory;
     }

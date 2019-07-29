@@ -22,7 +22,7 @@ services:
     depends_on:
       - db-mysql
       - redis
-    image: willmenn/standalone:0.9.09
+    image: willmenn/standalone:0.9.13
     container_name: demo-app
     environment:
       SPRING_PROFILES_ACTIVE: 'docker'

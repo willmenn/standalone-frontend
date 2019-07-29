@@ -12,6 +12,19 @@ spec:
     app: standalone
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: standalone-redis-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 6379
+      targetPort: 6379
+  selector:
+    app: redis
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
