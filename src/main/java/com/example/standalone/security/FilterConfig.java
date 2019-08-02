@@ -2,22 +2,11 @@ package com.example.standalone.security;
 
 import com.example.standalone.cache.UserCache;
 import com.example.standalone.cache.UserToken;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.GenericWebApplicationContext;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
@@ -31,6 +20,9 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.servlet.DispatcherType.REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+
 @Configuration
 @Slf4j
 public class FilterConfig implements ServletContextInitializer {
@@ -39,7 +31,7 @@ public class FilterConfig implements ServletContextInitializer {
     private UserCache userCache;
 
     @Autowired
-    public FilterConfig( AuthConfig authConfig, UserCache userCache) {
+    public FilterConfig(AuthConfig authConfig, UserCache userCache) {
         this.authConfig = authConfig;
         this.userCache = userCache;
     }
@@ -52,13 +44,15 @@ public class FilterConfig implements ServletContextInitializer {
                     servletContext.addFilter(s.getName(),
                             new RequestResponseLoggingFilter(userCache, new HashSet<>(s.getRoles()), s.getName()));
                     servletContext.getFilterRegistration(s.getName())
-                            .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, s.getPath());
+                            .addMappingForUrlPatterns(EnumSet.of(REQUEST), true, s.getPath());
                 });
     }
 
     @Slf4j
     private static class RequestResponseLoggingFilter implements Filter {
 
+        private static final String BEARER_PREFIX = "Bearer";
+        private static final String AUTHORIZATION_HEADER = "Authorization";
         private UserCache userCache;
 
         private Set<String> roles;
@@ -76,26 +70,35 @@ public class FilterConfig implements ServletContextInitializer {
         }
 
         @Override
-        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                throws IOException, ServletException {
+
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
 
-            String jwtToken = req.getHeader("Authorization");
+            String jwtToken = req.getHeader(AUTHORIZATION_HEADER);
 
-            if (jwtToken != null) {
-                String token = jwtToken.replace("Bearer", "");
+            if (jwtToken == null) {
+
+                res.setStatus(FORBIDDEN.value());
+
+            } else {
+
+                String token = removeBearerPrefix(jwtToken);
 
                 UserToken userDetails = userCache.getUserByToken(token.trim());
 
                 if (userDetails != null && roles.contains(userDetails.getRole())) {
                     chain.doFilter(request, response);
                 } else {
-                    res.setStatus(HttpStatus.FORBIDDEN.value());
+                    res.setStatus(FORBIDDEN.value());
                 }
 
-            } else {
-                res.setStatus(HttpStatus.FORBIDDEN.value());
             }
+        }
+
+        private String removeBearerPrefix(String jwtToken) {
+            return jwtToken.replace(BEARER_PREFIX, "");
         }
 
         @Override
