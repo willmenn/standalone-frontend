@@ -19,6 +19,9 @@ spec:
           ports:
             - containerPort: 5555
               name: http
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8"
         - image: mysql:5.5
           name: mysql
           ports:

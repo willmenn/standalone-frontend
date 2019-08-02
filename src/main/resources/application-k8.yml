@@ -7,12 +7,12 @@ management:
 standalone:
   jdbc:
     driver: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql_for_demo:3306/auth?serverTimezone=CET
+    url: jdbc:mysql://localhost:3306/auth?serverTimezone=CET
     user: user
     pass: root
 
   redis:
-    host: "redis_for_demo"
+    host: "standalone-redis-service"
     port: 6379
 
   jwt:

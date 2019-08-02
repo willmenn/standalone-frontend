@@ -11,6 +11,10 @@ standalone:
     user: user
     pass: root
 
+  redis:
+    host: "localhost"
+    port: 6379
+
   jwt:
     expire-time-sec: 5
     secret: "secret"

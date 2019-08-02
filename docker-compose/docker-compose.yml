@@ -46,6 +46,7 @@ services:
   redis:
     restart: always
     image: redis:5.0-alpine
+    container_name: redis_for_demo
     volumes:
       - ./data:/data
     ports:
