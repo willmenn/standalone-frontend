@@ -1,8 +1,34 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 standalone:
   jdbc:
     driver: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/auth?serverTimezone=CET
     user: user
     pass: root
+
   jwt:
     expire-time-sec: 5
+    secret: "secret"
+    issuer: "sso.standalone"
+
+  auth:
+    paths:
+      - path: "/admin/*"
+        name: "admin"
+        verbs:
+          - "*"
+        roles:
+          - "ADMIN"
+
+      - path: "/users/*"
+        name: "users"
+        verbs:
+          - "*"
+        roles:
+          - "ADMIN"
+          - "APP_USER"

@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class UserToken implements Serializable {
     private String username;
     private String token;
+    private String role;
 }

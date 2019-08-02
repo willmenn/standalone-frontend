@@ -24,9 +24,9 @@ public class AuthJwtCreator {
     @Autowired
     public AuthJwtCreator(JwtConfig configs) {
         this.configs = configs;
-        this.algorithm = Algorithm.HMAC256("secret");
+        this.algorithm = Algorithm.HMAC256(configs.getSecret());
         this.verifier = JWT.require(algorithm)
-                .withIssuer("auth0")
+                .withIssuer(configs.getIssuer())
                 .build();
     }
 

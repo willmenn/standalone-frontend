@@ -47,7 +47,9 @@ public class AuthRestController {
         if (role == null || role.isEmpty()) {
             return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
         }
-        userCache.addUser(new UserToken(authRequest.getUsername(), token.getToken()));
+
+        userCache.addUser(new UserToken(authRequest.getUsername(), token.getToken(), role));
+
         return new ResponseEntity<>(new AuthResponse(authRequest.username,
                 token.getToken(),
                 role,

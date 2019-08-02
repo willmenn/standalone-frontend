@@ -9,4 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "standalone.jwt")
 public class JwtConfig {
     private Long expireTimeSec;
+    private String secret;
+    private String issuer;
 }
