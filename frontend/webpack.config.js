@@ -31,7 +31,7 @@ module.exports = {
             }
         },
     },
-    entry: ['@babel/polyfill', 'whatwg-fetch', 'react-hot-loader/patch', path.join(__dirname, '/src/index.jsx')],
+    entry: ['@babel/polyfill', 'whatwg-fetch', 'react-hot-loader/patch', path.join(__dirname, '/src/index.jsx'), 'axios'],
     module: {
         rules: [
             {
@@ -40,7 +40,7 @@ module.exports = {
                 loaders: ['babel-loader'],
             },
             {
-                test: /\.scss$/,
+                test: /\.(scss|sass)$/,
                 loader: 'style-loader!css-loader!sass-loader',
             },
             {
