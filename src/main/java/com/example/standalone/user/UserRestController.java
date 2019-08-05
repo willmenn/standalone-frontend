@@ -43,9 +43,9 @@ public class UserRestController {
         return userCache.getUserByToken(token);
     }
 
-    @GetMapping
-    public List<Map<String, Object>> getAllUsers() {
-        return repository.fetchAll();
+    @GetMapping("/apps/{app}")
+    public List<Map<String, Object>> getAllUsers(@PathVariable("app") String appToken) {
+        return repository.fetchAllByApp(appToken);
     }
 
     @Getter
