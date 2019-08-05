@@ -47,7 +47,7 @@ class App extends React.Component {
     render() {
         return (<div style={{background: '#F7F7F7'}}>
                 <div className=" panel LoginContainer" style={loginContainerCss}>
-                    <section className="hero is-dark">
+                    <section className="hero is-dark" style={inputLoginCss}>
                         <div className="hero-body">
                             <div className="container">
                                 <h1 className="title">

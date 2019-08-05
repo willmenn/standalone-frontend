@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: standalone
-          image: willmenn/standalone:0.9.20
+          image: willmenn/standalone:0.9.22
           ports:
             - containerPort: 5555
               name: http
@@ -60,13 +60,10 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:5.0-alpine
+          image: redis:latest
           ports:
             - containerPort: 6379
           resources:
-            limits:
-              cpu: 250m
-              memory: 512Mi
             requests:
-              cpu: 250m
-              memory: 512Mi
+              cpu: 100m
+              memory: 100Mi
