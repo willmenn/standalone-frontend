@@ -44,6 +44,7 @@ public class AuthRestController {
         return new ResponseEntity<>(new AuthResponse(authRequest.username,
                 token.getToken(),
                 role,
+                authRequest.getAppToken(),
                 token.getExpiration()), OK);
     }
 
@@ -78,6 +79,7 @@ public class AuthRestController {
         private String username;
         private String token;
         private String role;
+        private String appToken;
         private LocalDateTime expiration;
     }
 
