@@ -3,7 +3,6 @@ package com.example.standalone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
@@ -11,8 +10,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class StandaloneApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StandaloneApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StandaloneApplication.class, args);
+    }
 
 }

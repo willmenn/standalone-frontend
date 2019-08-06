@@ -6,7 +6,7 @@ import com.example.standalone.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,25 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpEntity.EMPTY;
-import static org.springframework.http.HttpStatus.ACCEPTED;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthRestController {
 
-    private AuthJwtCreator jwtCreator;
-    private UserRepository repository;
-    private UserCache userCache;
-
-    @Autowired
-    public AuthRestController(AuthJwtCreator jwtCreator, UserRepository repository, UserCache userCache) {
-        this.jwtCreator = jwtCreator;
-        this.repository = repository;
-        this.userCache = userCache;
-    }
+    private final AuthJwtCreator jwtCreator;
+    private final UserRepository repository;
+    private final UserCache userCache;
 
     @PostMapping
     public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {

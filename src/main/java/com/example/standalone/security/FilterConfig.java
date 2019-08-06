@@ -1,8 +1,8 @@
 package com.example.standalone.security;
 
 import com.example.standalone.cache.UserCache;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,16 +14,11 @@ import static javax.servlet.DispatcherType.REQUEST;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class FilterConfig implements ServletContextInitializer {
 
-    private AuthConfig authConfig;
-    private UserCache userCache;
-
-    @Autowired
-    public FilterConfig(AuthConfig authConfig, UserCache userCache) {
-        this.authConfig = authConfig;
-        this.userCache = userCache;
-    }
+    private final AuthConfig authConfig;
+    private final UserCache userCache;
 
     @Override
     public void onStartup(ServletContext servletContext) {
