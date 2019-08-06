@@ -1,18 +1,14 @@
 package com.example.standalone.cache;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserCache {
 
-    private RedisTemplate template;
-
-    @Autowired
-    public UserCache(RedisTemplate template) {
-        this.template = template;
-    }
+    private final RedisTemplate template;
 
     public void addUser(UserToken user) {
         template.opsForList().leftPush(user.getToken(), user);

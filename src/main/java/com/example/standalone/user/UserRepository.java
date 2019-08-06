@@ -1,26 +1,18 @@
 package com.example.standalone.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepository {
 
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     List<Map<String, Object>> fetchAllByApp(String appToken) {
         return jdbcTemplate.queryForList("SELECT USERNAME, ROLE FROM USER_DETAILS WHERE APP = ?",

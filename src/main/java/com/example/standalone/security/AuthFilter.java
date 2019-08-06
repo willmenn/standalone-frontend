@@ -2,13 +2,10 @@ package com.example.standalone.security;
 
 import com.example.standalone.cache.UserCache;
 import com.example.standalone.cache.UserToken;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,20 +14,15 @@ import java.util.Set;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Slf4j
+@RequiredArgsConstructor
 class AuthFilter implements Filter {
 
     private static final String BEARER_PREFIX = "Bearer";
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private UserCache userCache;
+    private final UserCache userCache;
 
-    private Set<String> roles;
-    private String name;
-
-    AuthFilter(UserCache userCache, Set<String> roles, String name) {
-        this.userCache = userCache;
-        this.roles = roles;
-        this.name = name;
-    }
+    private final Set<String> roles;
+    private final String name;
 
     @Override
     public void init(javax.servlet.FilterConfig filterConfig) {

@@ -2,33 +2,19 @@ package com.example.standalone.user;
 
 import com.example.standalone.cache.UserCache;
 import com.example.standalone.cache.UserToken;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserRestController {
 
-    private UserRepository repository;
-    private UserCache userCache;
-
-    @Autowired
-    public UserRestController(UserRepository repository, UserCache userCache) {
-        this.repository = repository;
-        this.userCache = userCache;
-    }
+    private final UserRepository repository;
+    private final UserCache userCache;
 
     @PostMapping
     public boolean createUser(@RequestBody CreateUserRequest createUserRequest) {
