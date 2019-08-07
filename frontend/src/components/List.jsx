@@ -6,7 +6,7 @@ class List extends React.Component {
         super(props)
     }
 
-    comparar(a, b) {
+    compareUsers(a, b) {
         if (a.USERNAME < b.USERNAME) {
             return -1;
         }
@@ -20,7 +20,7 @@ class List extends React.Component {
     render() {
         return (
             <ul>
-                {this.props.data.sort(this.comparar).map(data =>
+                {this.props.data.sort(this.compareUsers).map(data =>
                     <li>
                         <Card data={data}/>
                     </li>)}
