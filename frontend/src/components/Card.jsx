@@ -10,7 +10,9 @@ class Card extends React.Component {
             <div className="card">
                 <div className="card-content">
                     <p className="title">
-                        {JSON.stringify(this.props.data)}
+                        Username: {this.props.data.USERNAME}
+                        <br/>
+                        Role: {this.props.data.ROLE}
                     </p>
                 </div>
             </div>
