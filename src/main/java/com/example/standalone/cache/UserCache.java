@@ -11,10 +11,10 @@ public class UserCache {
     private final RedisTemplate template;
 
     public void addUser(UserToken user) {
-        template.opsForList().leftPush(user.getToken(), user);
+        template.opsForValue().set(user.getToken(), user);
     }
 
     public UserToken getUserByToken(String token) {
-        return (UserToken) template.opsForList().leftPop(token);
+        return (UserToken) template.opsForValue().get(token);
     }
 }
