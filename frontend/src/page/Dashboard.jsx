@@ -6,18 +6,33 @@ import CreateUser from '../components/CreateUser'
 class Dashboard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {userList: []}
+        this.state = {userList: [], groupByRole: new Map()}
         this.updateUsersList = this.updateUsersList.bind(this);
     }
 
     componentDidMount() {
         getUsersByApp(this.props.app, this.props.token)
             .then(res => this.setState({userList: res.data}))
+            .then(() => this.groupByRole())
     }
 
     updateUsersList() {
         getUsersByApp(this.props.app, this.props.token)
             .then(res => this.setState({userList: res.data}))
+    }
+
+    groupByRole() {
+        let groupByRole = new Map();
+        console.log(this.state.userList)
+        this.state.userList
+            .forEach(user => {
+                if (groupByRole.has(user.ROLE)) {
+                    groupByRole.set(user.ROLE, groupByRole.get(user.ROLE) + 1);
+                } else {
+                    groupByRole.set(user.ROLE, 1);
+                }
+            })
+        this.setState({groupByRole: groupByRole})
     }
 
     render() {
@@ -37,7 +52,15 @@ class Dashboard extends React.Component {
                 </section>
                 <div className="columns">
                     <div className="column">
-                        To be Implemented
+                        <div className="tile is-ancestor">
+                            <div className="tile is-vertical is-8">
+                                <div className="tile">
+                                    <div className="tile is-parent is-vertical">
+                                        {this.buildTiles().map(elem => elem)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="column">
                         <List data={this.state.userList}/>
@@ -52,6 +75,19 @@ class Dashboard extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    buildTiles() {
+        let arr = new Array();
+        this.state.groupByRole.forEach((v, k, m) =>
+            arr.push(
+                <article className="tile is-child notification is-dark">
+                    <p className="title">{k}</p>
+                    <p className="subtitle">{v}</p>
+                </article>
+            )
+        );
+        return arr;
     }
 }
 
