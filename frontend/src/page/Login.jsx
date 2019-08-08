@@ -1,6 +1,5 @@
 import React from "react";
 import {authUser} from "../auth/AuthApi";
-import axios from "axios";
 
 const loginContainerCss = {
     width: '20%',
@@ -22,7 +21,9 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            hasError: false,
+            errorMessage: ''
         };
         this.handleChangeForUsername = this.handleChangeForUsername.bind(this);
         this.handleChangeForPassword = this.handleChangeForPassword.bind(this);
@@ -43,7 +44,10 @@ class Login extends React.Component {
         authUser(this.state.username, this.state.password)
             .then(res => {
                 this.props.appHandler(res.data.appToken, 'DASHBOARD', res.data.token);
-            });
+                this.setState({hasError: false})
+            }).catch(error => {
+            this.setState({hasError: true, errorMessage: error.response.data.errorMessage})
+        });
 
 
     }
@@ -81,6 +85,13 @@ class Login extends React.Component {
                         value="Login"
                         style={buttonLoginCss}/>
                 </form>
+                {this.state.hasError ?
+                    <article className="message is-danger" style={{marginTop: '40px'}}>
+                        <div className="message-body">
+                            {this.state.errorMessage}
+                        </div>
+                    </article> : null
+                }
             </div>
         </div>)
     }

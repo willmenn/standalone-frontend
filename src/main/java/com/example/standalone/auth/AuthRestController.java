@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
-import static org.springframework.http.HttpEntity.EMPTY;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,13 +33,19 @@ public class AuthRestController {
     @PostMapping
     public ResponseEntity authUser(@RequestBody AuthRequest authRequest) {
         TokenAndExpiration token = jwtCreator.getToken();
+        String role;
+        try {
 
-        String role = repository.findByUsername(authRequest.getUsername(),
-                authRequest.getPassword(),
-                authRequest.getAppToken());
+            role = repository.findByUsername(authRequest.getUsername(),
+                    authRequest.getPassword(),
+                    authRequest.getAppToken());
+
+        } catch (DataAccessException exception) {
+            return returnUnauthorized();
+        }
 
         if (role == null || role.isEmpty()) {
-            return new ResponseEntity<>(EMPTY, UNAUTHORIZED);
+            return returnUnauthorized();
         }
 
         userCache.addUser(new UserToken(authRequest.getUsername(), token.getToken(), role));
@@ -46,6 +55,10 @@ public class AuthRestController {
                 role,
                 authRequest.getAppToken(),
                 token.getExpiration()), OK);
+    }
+
+    private ResponseEntity returnUnauthorized() {
+        return new ResponseEntity<>(new ErrorResponse("Invalid username/password."), UNAUTHORIZED);
     }
 
     @PostMapping("/validate")
@@ -90,5 +103,12 @@ public class AuthRestController {
         private String username;
         private String password;
         private String appToken;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class ErrorResponse {
+        private String errorMessage;
     }
 }
