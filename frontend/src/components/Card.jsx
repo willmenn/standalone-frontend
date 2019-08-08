@@ -9,7 +9,7 @@ class Card extends React.Component {
         return (
             <div className="card">
                 <div className="card-content">
-                    <p className="title">
+                    <p className="subtitle">
                         Username: {this.props.data.USERNAME}
                         <br/>
                         Role: {this.props.data.ROLE}

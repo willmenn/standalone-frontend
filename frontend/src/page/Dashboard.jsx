@@ -22,18 +22,19 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div>
-                <nav className="navbar card" role="navigation" aria-label="main navigation"
-                     style={{marginBottom: '5px'}}>
-                    <div className="navbar-brand">
-                        <h2>{this.props.app}</h2>
-                        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
+            <div style={{background: '#F7F7F7'}}>
+                <section className="hero is-dark" style={{marginBottom: '5px'}}>
+                    <div className="hero-body">
+                        <div className="container">
+                            <h1 className="title">
+                                Welcome to Auth Dashboard
+                            </h1>
+                            <h2 className="subtitle">
+                                You are logged in to <b>group {this.props.app}</b>
+                            </h2>
+                        </div>
                     </div>
-                </nav>
+                </section>
                 <div className="columns">
                     <div className="column">
                         To be Implemented
