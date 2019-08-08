@@ -15,7 +15,10 @@ class CreateUser extends React.Component {
         this.state = {
             username: '',
             password: '',
-            role: ''
+            role: '',
+            hasError: false,
+            errorMessage: '',
+            isSuccess: false
         };
 
         this.handleChangeForUsername = this.handleChangeForUsername.bind(this);
@@ -46,7 +49,12 @@ class CreateUser extends React.Component {
         };
 
         createUser(body, this.props.token)
-            .then(() => this.props.updateUsersList());
+            .then(() => {
+                this.props.updateUsersList();
+                this.setState({hasError: false, isSuccess: true})
+            }).catch(error => {
+            this.setState({hasError: true, errorMessage: error.response.data.errorMessage, isSuccess: false})
+        });
     }
 
     render() {
@@ -81,10 +89,23 @@ class CreateUser extends React.Component {
                     <input
                         className="button"
                         type="submit"
-                        value="Login"
-                        // style={buttonLoginCss}
+                        value="Create"
                     />
                 </form>
+                {this.state.hasError ?
+                    <article className="message is-danger">
+                        <div className="message-body">
+                            {this.state.errorMessage}
+                        </div>
+                    </article> : null
+                }
+                {this.state.isSuccess ?
+                    <article className="message is-success">
+                        <div className="message-body">
+                            User created successfully.
+                        </div>
+                    </article> : null
+                }
             </div>)
     }
 }
