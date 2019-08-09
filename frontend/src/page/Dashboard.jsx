@@ -52,8 +52,8 @@ class Dashboard extends React.Component {
                 </section>
                 <div className="columns">
                     <div className="column">
-                        <div className="tile is-ancestor">
-                            <div className="tile is-vertical is-8">
+                        <div className="tile is-ancestor" style={{margin: 'auto'}}>
+                            <div className="tile is-vertical is-8" style={{margin:'auto'}}>
                                 <div className="tile">
                                     <div className="tile is-parent is-vertical">
                                         {this.buildTiles().map(elem => elem)}
